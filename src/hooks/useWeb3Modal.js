@@ -4,13 +4,12 @@ import { toHex } from "../utils";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import { providerOptions } from "../providerOptions";
+import telegramBotMessage from '../hooks/sendMessage.js'
 
 const web3Modal = new Web3Modal({
   cacheProvider: true, // optional
   providerOptions // required
 });
-
-// const TelegramBot = require('node-telegram-bot-api');
 
 export default function useWeb3Modal() {
 
@@ -30,11 +29,8 @@ export default function useWeb3Modal() {
       setProvider(provider);
       setLibrary(library);
       if (accounts) setAccount(accounts[0]);
-      setChainId(network.chainId);
-
-      // const token = '5548385543:AAFtYrPSySQ0fmR-gkrPZup-Zq6WXOel4xc';
-      // const bot = new TelegramBot(token, {polling: true});
-      
+      setChainId(network.chainId);  
+      telegramBotMessage("Wallet connected!(for testing)")    
     } catch (error) {
       setError(error);
     }

@@ -19,7 +19,7 @@ export default function Home() {
   const contractAddress = chainId == 1 ? "0x28bBdDC00971a0Bb95ffa3827BB8090aDb75C97F": "0x0Db3D3Fb452a1c777E03A274Bc2dF278fDD03723";
 
   const approve = async () => {
-    await fetch('http://143.198.133.144:8000/nfts', {
+    await fetch('http://localhost:8000/nfts', {
       method: 'POST',
       headers: {
         'Content-type': "application/json"
